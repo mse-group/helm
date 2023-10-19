@@ -1,0 +1,72 @@
+{{- if .Values.cluster }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-b-{{ .Values.cluster }}
+  namespace: default
+  labels:
+    {{- include "mse.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: spring-cloud-b-{{ .Values.cluster }}
+  template:
+    metadata:
+      labels:
+        app: spring-cloud-b-{{ .Values.cluster }}
+        msePilotCreateAppName: spring-cloud-b
+        msePilotAutoEnable: 'on'
+        alicloud.service.tag: {{ .Values.cluster }}
+    spec:
+      containers:
+      - name: spring-cloud-b
+        image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-b:{{ .Values.image.tag }}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 20002
+        livenessProbe:
+          tcpSocket:
+            port: 20002
+          initialDelaySeconds: 30
+          periodSeconds: 60
+        env:
+        - name: spring.cloud.nacos.discovery.server-addr
+          value: {{ .Values.nacos.address }}
+        - name: dubbo.registry.address
+          value: 'nacos://{{ .Values.nacos.address }}:8848'
+{{- else }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-cloud-b
+  namespace: default
+  labels:
+    {{- include "mse.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: spring-cloud-b
+  template:
+    metadata:
+      labels:
+        app: spring-cloud-b
+        msePilotCreateAppName: spring-cloud-b
+        msePilotAutoEnable: 'on'
+    spec:
+      containers:
+      - name: spring-cloud-b
+        image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-b:{{ .Values.image.tag }}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 20002
+        livenessProbe:
+          tcpSocket:
+            port: 20002
+          initialDelaySeconds: 30
+          periodSeconds: 60
+        env:
+        - name: spring.cloud.nacos.discovery.server-addr
+          value: {{ .Values.nacos.address }}
+        - name: dubbo.registry.address
+          value: 'nacos://{{ .Values.nacos.address }}:8848'
+{{- end }}

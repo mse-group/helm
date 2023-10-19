@@ -1,0 +1,33 @@
+{{- if .Values.cluster }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-cloud-a
+  namespace: default
+  labels:
+    {{- include "mse.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 20001
+      targetPort: http
+      protocol: TCP
+  selector:
+    app: spring-cloud-a-{{ .Values.cluster }}
+{{- else }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-cloud-a
+  namespace: default
+  labels:
+    {{- include "mse.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 20001
+      targetPort: http
+      protocol: TCP
+  selector:
+    app: spring-cloud-a
+{{- end }}    
