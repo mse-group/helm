@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: spring-cloud-a
-        image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-a:{{ .Values.image.tag }}
+        image: registry.cn-shanghai.aliyuncs.com/mse-governance-demo/spring-cloud-a:{{ .Values.image.tag }}
         imagePullPolicy: Always
         ports:
           - containerPort: 20001
@@ -55,7 +55,7 @@ spec:
     spec:
       containers:
       - name: spring-cloud-a
-        image: registry.cn-shanghai.aliyuncs.com/yizhan/spring-cloud-a:{{ .Values.image.tag }}
+        image: registry.cn-shanghai.aliyuncs.com/mse-governance-demo/spring-cloud-a:{{ .Values.image.tag }}
         imagePullPolicy: Always
         ports:
           - containerPort: 20001
