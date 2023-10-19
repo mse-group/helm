@@ -10,7 +10,6 @@ spec:
   type: ClusterIP
   ports:
     - port: 20001
-      targetPort: http
       protocol: TCP
   selector:
     app: spring-cloud-a-{{ .Values.cluster }}
@@ -26,7 +25,6 @@ spec:
   type: ClusterIP
   ports:
     - port: 20001
-      targetPort: http
       protocol: TCP
   selector:
     app: spring-cloud-a
